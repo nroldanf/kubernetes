@@ -304,8 +304,8 @@ extraEnvFrom: ~
 # extraEnvFrom: |
 #   - secretRef:
 #       name: '{{ .Release.Name }}-airflow-connections'
-#   - configMapRef:
-#       name: '{{ .Release.Name }}-airflow-variables'
+  # - configMapRef:
+  #     name: 'airflow-variables' #'{{ .Release.Name }}-airflow-variables'
 
 # Airflow database & redis config
 data:
@@ -1363,11 +1363,13 @@ config:
   core:
     dags_folder: '{{ include "airflow_dags" . }}'
     # This is ignored when used with the official Docker image
-    load_examples: 'False'
+    load_examples: 'True'
+    dagbag_import_timeout: 300.0
     executor: '{{ .Values.executor }}'
     # For Airflow 1.10, backward compatibility; moved to [logging] in 2.0
     colored_console_log: 'False'
     remote_logging: '{{- ternary "True" "False" .Values.elasticsearch.enabled }}'
+    expose_config: 'True'
   # Authentication backend used for the experimental API
   api:
     auth_backend: airflow.api.auth.backend.deny_all

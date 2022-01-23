@@ -131,11 +131,21 @@ Install from local directory:
 helm install -g --debug <path>
 ```
 
-Port forwarding to access Airflow UI:
+Port forwarding to access Airflow UI for debug purposes:
+```
+kubectl get svc
+kubectl port-forward svc/$RELEASE_NAME-webserver 8080:8080 --namespace $NAMESPACE
 ```
 
+List helm releases:
+```
+helm ls
 ```
 
+Upgrade:
+```
+helm upgrade --install <release_name> <repo_name> -f <values.yaml path> --debug --timeout 10m0s
+```
 
 
 
