@@ -8,9 +8,17 @@ katacoda.com
 
 ### minikube
 
-minikube-installer.exe
+https://minikube.sigs.k8s.io/docs/start/
 
-minikube start
+minikube start --driver docker
+
+minikube status
+
+### kind
+
+kind version
+
+kind create cluster --name <cluster_name> --config <config_file.yaml>
 
 ### microk8s
 
@@ -19,6 +27,14 @@ microk8s.kubectl
 microk8s.enable dns
 
 alias kubectl=microk8s.kubectl
+
+## Change of context
+
+kubectl config view
+
+kubectl config get-contexts
+
+kubectl config use-context <name_of_context>
 
 ## Kubectl run, create and apply
 
@@ -34,13 +50,25 @@ kubectl version
 
 kubectl run my-nginx --image nginx
 
-kubectl get pods
+kubectl get ns/ kubectl get namespaces
+
+kubectl get pods -n <namespace_name>
 
 kubectl get all
 
 kubectl delete deployment my-nginx
 
 kubectl get all
+
+## Get more information about entities
+
+kubectl describe pods <pod_name> -n <namespace_name>
+
+kubectl logs <pod_name> -n <namespace_name> -c <container_name>
+
+## Run a command within a container inside a pod
+
+kubectl exec --stdin --tty <pod_name> -n <namespace_name> -c <container_name> -- <command>
 
 ## Scaling ReplicaSets
 
@@ -76,10 +104,37 @@ kubectl get pods
 
 kubectl delete deployment my-apache
 
+## helm
 
+Find, install and publish Kubernetes packages: https://artifacthub.io/packages
 
- 
+```
+helm repo add apache-airflow https://airflow.apache.org/
+```
 
+```
+helm repo list
+```
+
+Search a chart in a repo (artifact hub by default):
+```
+helm search airflow
+```
+
+Download chart locally:
+```
+helm pull apache-airflow/airflow
+```
+
+Install from local directory:
+```
+helm install -g --debug <path>
+```
+
+Port forwarding to access Airflow UI:
+```
+
+```
 
 
 
