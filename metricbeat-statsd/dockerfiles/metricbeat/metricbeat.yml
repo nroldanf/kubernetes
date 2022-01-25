@@ -1,0 +1,19 @@
+metricbeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+
+metricbeat.modules:
+- module: airflow
+  host: "localhost"
+  port: "8126"
+  #ttl: "30s"
+  metricsets: [ 'statsd' ]
+
+processors:
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~
+
+output.elasticsearch:
+  hosts: 'http://3d93-201-244-253-205.ngrok.io'
+  # username: '${ELASTICSEARCH_USERNAME:}'
+  # password: '${ELASTICSEARCH_PASSWORD:}'

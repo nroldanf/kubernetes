@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: statsd-deployment
+  namespace: airflow
+  labels:
+    app: statsd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: statsd
+  template:
+    metadata:
+      labels:
+        app: statsd
+    spec:
+      containers:
+      - name: statsd
+        image: statsd/statsd:v0.9.0
+        ports:
+        - containerPort: 8125
+          protocol: TCP
+        - containerPort: 8125
+          protocol: UDP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: statsd-service
+spec:
+  selector:
+    app: statsd
+  ports:
+    - protocol: UDP
+      port: 8125
+      targetPort: 8125
+    - protocol: TCP
+      port: 8125
+      targetPort: 8125
