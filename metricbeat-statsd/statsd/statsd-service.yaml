@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: statsd-service
+  namespace: airflow
+spec:
+  selector:
+    app: statsd
+  ports:
+    - name: udp-port
+      port: 8125
+      protocol: UDP
+      targetPort: 8125
+    - name: tcp-port
+      port: 8125
+      protocol: TCP
+      targetPort: 8125

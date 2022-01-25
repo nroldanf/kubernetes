@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: statsd-service-config
+  namespace: airflow
+data:
+  statsd-host: statsd-service # service

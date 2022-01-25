@@ -30,7 +30,11 @@ metadata:
 data:
   airflow.yml: |-
     - module: airflow
-      host: localhost
+      host:
+        valueFrom:
+          configMapKeyRef:
+            name: statsd-service-config
+            key: statsd-host
       metricsets:
         - statsd
 ---
