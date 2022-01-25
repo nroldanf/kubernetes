@@ -5,7 +5,7 @@ metadata:
   name: metricbeat-deployment-config
   namespace: airflow
   labels:
-    k8s-app: metricbeat
+    app: metricbeat
 data:
   metricbeat.yml: |-
     metricbeat.config.modules:
@@ -26,34 +26,29 @@ metadata:
   name: metricbeat-deployment-modules
   namespace: airflow
   labels:
-    k8s-app: metricbeat
+    app: metricbeat
 data:
   airflow.yml: |-
     - module: airflow
-      host:
-        valueFrom:
-          configMapKeyRef:
-            name: statsd-service-config
-            key: statsd-host
+      host: ${STATSD_HOST}
       metricsets:
         - statsd
 ---
-# Deploy a Metricbeat instance per node for node metrics retrieval
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: metricbeat
   namespace: airflow
   labels:
-    k8s-app: metricbeat
+    app: metricbeat
 spec:
   selector:
     matchLabels:
-      k8s-app: metricbeat
+      app: metricbeat
   template:
     metadata:
       labels:
-        k8s-app: metricbeat
+        app: metricbeat
     spec:
       serviceAccountName: metricbeat
       containers:
@@ -73,6 +68,11 @@ spec:
           value: elastic
         - name: ELASTICSEARCH_PASSWORD
           value: changeme
+        - name: STATSD_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: statsd-service-config
+              key: statsd-host
         - name: NODE_NAME
           valueFrom:
             fieldRef:
@@ -97,19 +97,19 @@ spec:
         - name: modules
           mountPath: /usr/share/metricbeat/modules.d
           readOnly: true
-        # - name: proc
-        #   mountPath: /hostfs/proc
-        #   readOnly: true
-        # - name: cgroup
-        #   mountPath: /hostfs/sys/fs/cgroup
-        #   readOnly: true
+        - name: proc
+          mountPath: /hostfs/proc
+          readOnly: true
+        - name: cgroup
+          mountPath: /hostfs/sys/fs/cgroup
+          readOnly: true
       volumes:
-      # - name: proc
-      #   hostPath:
-      #     path: /proc
-      # - name: cgroup
-      #   hostPath:
-      #     path: /sys/fs/cgroup
+      - name: proc
+        hostPath:
+          path: /proc
+      - name: cgroup
+        hostPath:
+          path: /sys/fs/cgroup
       - name: config
         configMap:
           defaultMode: 0640
@@ -136,41 +136,41 @@ roleRef:
   kind: ClusterRole
   name: metricbeat
   apiGroup: rbac.authorization.k8s.io
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: metricbeat
-  namespace: airflow
-subjects:
-  - kind: ServiceAccount
-    name: metricbeat
-    namespace: airflow
-roleRef:
-  kind: Role
-  name: metricbeat
-  apiGroup: rbac.authorization.k8s.io
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: metricbeat-kubeadm-config
-  namespace: airflow
-subjects:
-  - kind: ServiceAccount
-    name: metricbeat
-    namespace: airflow
-roleRef:
-  kind: Role
-  name: metricbeat-kubeadm-config
-  apiGroup: rbac.authorization.k8s.io
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: RoleBinding
+# metadata:
+#   name: metricbeat
+#   namespace: airflow
+# subjects:
+#   - kind: ServiceAccount
+#     name: metricbeat
+#     namespace: airflow
+# roleRef:
+#   kind: Role
+#   name: metricbeat
+#   apiGroup: rbac.authorization.k8s.io
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: RoleBinding
+# metadata:
+#   name: metricbeat-kubeadm-config
+#   namespace: airflow
+# subjects:
+#   - kind: ServiceAccount
+#     name: metricbeat
+#     namespace: airflow
+# roleRef:
+#   kind: Role
+#   name: metricbeat-kubeadm-config
+#   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: metricbeat
   labels:
-    k8s-app: metricbeat
+    app: metricbeat
 rules:
 - apiGroups: [""]
   resources:
@@ -211,36 +211,36 @@ rules:
   - "/metrics"
   verbs:
   - get
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: metricbeat
-  # should be the namespace where metricbeat is running
-  namespace: airflow
-  labels:
-    k8s-app: metricbeat
-rules:
-  - apiGroups:
-      - coordination.k8s.io
-    resources:
-      - leases
-    verbs: ["get", "create", "update"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: metricbeat-kubeadm-config
-  namespace: airflow
-  labels:
-    k8s-app: metricbeat
-rules:
-  - apiGroups: [""]
-    resources:
-      - configmaps
-    resourceNames:
-      - kubeadm-config
-    verbs: ["get"]
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: Role
+# metadata:
+#   name: metricbeat
+#   # should be the namespace where metricbeat is running
+#   namespace: airflow
+#   labels:
+#     app: metricbeat
+# rules:
+#   - apiGroups:
+#       - coordination.k8s.io
+#     resources:
+#       - leases
+#     verbs: ["get", "create", "update"]
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: Role
+# metadata:
+#   name: metricbeat-kubeadm-config
+#   namespace: airflow
+#   labels:
+#     app: metricbeat
+# rules:
+#   - apiGroups: [""]
+#     resources:
+#       - configmaps
+#     resourceNames:
+#       - kubeadm-config
+#     verbs: ["get"]
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -248,5 +248,5 @@ metadata:
   name: metricbeat
   namespace: airflow
   labels:
-    k8s-app: metricbeat
+    app: metricbeat
 ---
