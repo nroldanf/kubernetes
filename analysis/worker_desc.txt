@@ -1,0 +1,156 @@
+Name:         airflow-worker-0
+Namespace:    airflow
+Priority:     0
+Node:         gke-refi-atx-1-refi-analytics-dev-ref-ba88a1d9-hwm2/10.72.140.16
+Start Time:   Thu, 20 Jan 2022 11:43:57 -0500
+Labels:       component=worker
+              controller-revision-hash=airflow-worker-788669f97f
+              release=airflow
+              statefulset.kubernetes.io/pod-name=airflow-worker-0
+              tier=airflow
+Annotations:  checksum/airflow-config: 05307f1fa90de21db51937d8df1126520c3a646501f7b181d5b73a75e26d7c11
+              checksum/extra-configmaps: 2e44e493035e2f6a255d08f8104087ff10d30aef6f63176f1b18f75f73295598
+              checksum/extra-secrets: bb91ef06ddc31c0c5a29973832163d8b0b597812a793ef911d33b622bc9d1655
+              checksum/metadata-secret: 765446a9def21895960ebc0df295399c35d3467cdd84be6ef8bc65c18ca0f7e5
+              checksum/pgbouncer-config-secret: da52bd1edfe820f0ddfacdebb20a4cc6407d296ee45bcb500a6407e2261a5ba2
+              checksum/result-backend-secret: 74e3e99feee51248d44224665d60fab543dd6b25ba95f04e6fcb0e5758342056
+              checksum/webserver-secret-key: e9c113188073bf2c4b11c3702926ff31e0143dae964187e813fbbc10e6ec8c81
+              cluster-autoscaler.kubernetes.io/safe-to-evict: true
+Status:       Pending
+IP:           10.74.5.113
+IPs:
+  IP:           10.74.5.113
+Controlled By:  StatefulSet/airflow-worker
+Init Containers:
+  wait-for-airflow-migrations:
+    Container ID:  containerd://4e29913dfa03594a6e1f434f71fe85b36634d444379538f49e0b667187d3db49
+    Image:         debian:buster-20210902
+    Image ID:      docker.io/library/debian@sha256:cdb5ae50fedfda0bc2f9e4d303683ab6096c84db9e97b0bbfea0653549aeb3f8
+    Port:          <none>
+    Host Port:     <none>
+    Args:
+      bash
+      -c
+      apt-get update -y &&  apt-get install curl -y && apt-get install  libffi-dev python3.7 python3-pip -y && curl https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -o cloud_sql_proxy && chmod +x cloud_sql_proxy && { ./cloud_sql_proxy -instances=refi-dev-analytics-ae:us-east4:refi-dev-atx-airflow-sql=tcp:5432 -ip_address_types=PRIVATE -credential_file=/secrets/key.json & } && pip3 install --upgrade pip && pip3 install psycopg2 && pip3 install 'apache-airflow==2.1.4' --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.1.4/constraints-3.7.txt" && airflow db check-migrations -t 300
+    State:          Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Sun, 23 Jan 2022 16:45:48 -0500
+      Finished:     Sun, 23 Jan 2022 16:47:02 -0500
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Sun, 23 Jan 2022 16:39:26 -0500
+      Finished:     Sun, 23 Jan 2022 16:40:39 -0500
+    Ready:          False
+    Restart Count:  734
+    Environment:
+      AIRFLOW__CORE__FERNET_KEY:               <set to the key 'fernet-key' in secret 'airflow-fernet-secret'>                   Optional: false
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN:         <set to the key 'connection' in secret 'airflow-db-connection'>                   Optional: false
+      AIRFLOW_CONN_AIRFLOW_DB:                 <set to the key 'connection' in secret 'airflow-db-connection'>                   Optional: false
+      AIRFLOW__WEBSERVER__SECRET_KEY:          <set to the key 'webserver-secret-key' in secret 'airflow-webserver-secret-key'>  Optional: false
+      AIRFLOW__CELERY__CELERY_RESULT_BACKEND:  <set to the key 'connection' in secret 'airflow-db-result-connection'>            Optional: false
+      AIRFLOW__CELERY__RESULT_BACKEND:         <set to the key 'connection' in secret 'airflow-db-result-connection'>            Optional: false
+      AIRFLOW__CELERY__BROKER_URL:             <set to the key 'connection' in secret 'auth-redis-secret'>                       Optional: false
+    Mounts:
+      /secrets/ from sql-secret (ro)
+      /var/run/secrets/kubernetes.io/serviceaccount from airflow-worker-token-dqwtz (ro)
+Containers:
+  worker:
+    Container ID:  
+    Image:         us-east4-docker.pkg.dev/shared-svcs-prod-artifacts-e7/shared-svcs-docker-images/mr-analytics:6cbba267de27fd3254faaea2409d5129f23c417c
+    Image ID:      
+    Port:          8793/TCP
+    Host Port:     0/TCP
+    Args:
+      bash
+      -c
+      exec \
+      airflow celery worker
+    State:          Waiting
+      Reason:       PodInitializing
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      DUMB_INIT_SETSID:                        0
+      AIRFLOW__CORE__FERNET_KEY:               <set to the key 'fernet-key' in secret 'airflow-fernet-secret'>                   Optional: false
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN:         <set to the key 'connection' in secret 'airflow-db-connection'>                   Optional: false
+      AIRFLOW_CONN_AIRFLOW_DB:                 <set to the key 'connection' in secret 'airflow-db-connection'>                   Optional: false
+      AIRFLOW__WEBSERVER__SECRET_KEY:          <set to the key 'webserver-secret-key' in secret 'airflow-webserver-secret-key'>  Optional: false
+      AIRFLOW__CELERY__CELERY_RESULT_BACKEND:  <set to the key 'connection' in secret 'airflow-db-result-connection'>            Optional: false
+      AIRFLOW__CELERY__RESULT_BACKEND:         <set to the key 'connection' in secret 'airflow-db-result-connection'>            Optional: false
+      AIRFLOW__CELERY__BROKER_URL:             <set to the key 'connection' in secret 'auth-redis-secret'>                       Optional: false
+    Mounts:
+      /opt/airflow/airflow.cfg from config (ro,path="airflow.cfg")
+      /opt/airflow/config/airflow_local_settings.py from config (ro,path="airflow_local_settings.py")
+      /opt/airflow/logs from logs (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from airflow-worker-token-dqwtz (ro)
+  worker-log-groomer:
+    Container ID:  
+    Image:         us-east4-docker.pkg.dev/shared-svcs-prod-artifacts-e7/shared-svcs-docker-images/mr-analytics:6cbba267de27fd3254faaea2409d5129f23c417c
+    Image ID:      
+    Port:          <none>
+    Host Port:     <none>
+    Args:
+      bash
+      /clean-logs
+    State:          Waiting
+      Reason:       PodInitializing
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      AIRFLOW__LOG_RETENTION_DAYS:  15
+    Mounts:
+      /opt/airflow/logs from logs (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from airflow-worker-token-dqwtz (ro)
+  cloud-sql-proxy:
+    Container ID:  
+    Image:         gcr.io/cloudsql-docker/gce-proxy:1.17
+    Image ID:      
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      /cloud_sql_proxy
+      -instances=refi-dev-analytics-ae:us-east4:refi-dev-atx-airflow-sql=tcp:5432
+      -ip_address_types=PRIVATE
+      -credential_file=/secrets/key.json
+    State:          Waiting
+      Reason:       PodInitializing
+    Ready:          False
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /secrets/ from sql-secret (ro)
+      /var/run/secrets/kubernetes.io/serviceaccount from airflow-worker-token-dqwtz (ro)
+Conditions:
+  Type              Status
+  Initialized       False 
+  Ready             False 
+  ContainersReady   False 
+  PodScheduled      True 
+Volumes:
+  logs:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  logs-airflow-worker-0
+    ReadOnly:   false
+  sql-secret:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  sql-secret
+    Optional:    false
+  config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      airflow-airflow-config
+    Optional:  false
+  airflow-worker-token-dqwtz:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  airflow-worker-token-dqwtz
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason   Age                       From     Message
+  ----     ------   ----                      ----     -------
+  Normal   Pulled   7m48s (x734 over 3d5h)    kubelet  Container image "debian:buster-20210902" already present on machine
+  Warning  BackOff  2m46s (x16930 over 3d5h)  kubelet  Back-off restarting failed container

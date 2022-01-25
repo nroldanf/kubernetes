@@ -1,0 +1,129 @@
+Name:         airflow-flower-7cb4995797-7clnm
+Namespace:    airflow
+Priority:     0
+Node:         gke-refi-atx-1-refi-analytics-dev-ref-ba88a1d9-hwm2/10.72.140.16
+Start Time:   Tue, 18 Jan 2022 06:50:06 -0500
+Labels:       component=flower
+              pod-template-hash=7cb4995797
+              release=airflow
+              tier=airflow
+Annotations:  <none>
+Status:       Running
+IP:           10.74.5.67
+IPs:
+  IP:           10.74.5.67
+Controlled By:  ReplicaSet/airflow-flower-7cb4995797
+Containers:
+  flower:
+    Container ID:  containerd://60c441bb395bd52c6f8f51bd5ac588c1b4b4852774b70f260e313d72e726a7a0
+    Image:         apache/airflow:2.2.0-python3.7
+    Image ID:      docker.io/apache/airflow@sha256:b960ce8e4f072dd58bf4070ddeef829d040b7f2362f8232e426da6b562d1cb81
+    Port:          5555/TCP
+    Host Port:     0/TCP
+    Args:
+      bash
+      -c
+      exec \
+      airflow celery flower
+    State:          Running
+      Started:      Tue, 18 Jan 2022 06:50:31 -0500
+    Ready:          True
+    Restart Count:  0
+    Liveness:       exec [curl localhost:5555] delay=10s timeout=1s period=5s #success=1 #failure=10
+    Readiness:      exec [curl localhost:5555] delay=10s timeout=1s period=5s #success=1 #failure=10
+    Environment:
+      AIRFLOW__CORE__FERNET_KEY:                                     <set to the key 'fernet-key' in secret 'airflow-fernet-secret'>                   Optional: false
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN:                               <set to the key 'connection' in secret 'airflow-db-connection'>                   Optional: false
+      AIRFLOW_CONN_AIRFLOW_DB:                                       <set to the key 'connection' in secret 'airflow-db-connection'>                   Optional: false
+      AIRFLOW__WEBSERVER__SECRET_KEY:                                <set to the key 'webserver-secret-key' in secret 'airflow-webserver-secret-key'>  Optional: false
+      AIRFLOW__CELERY__CELERY_RESULT_BACKEND:                        <set to the key 'connection' in secret 'airflow-db-result-connection'>            Optional: false
+      AIRFLOW__CELERY__RESULT_BACKEND:                               <set to the key 'connection' in secret 'airflow-db-result-connection'>            Optional: false
+      AIRFLOW__CELERY__BROKER_URL:                                   <set to the key 'connection' in secret 'auth-redis-secret'>                       Optional: false
+      SENDGRID_MAIL_FROM:                                            data-engineering@gocaribou.com
+      AIRFLOW_VAR_REPORTS_PROJECT_ID:                                motorefi-analytics-reports-dev
+      AIRFLOW_VAR_ADS_PLATFORMS_SECRETS_VERSION_ID:                  latest
+      AIRFLOW_VAR_GOOGLE_ADS_SECRET_DEVELOPER_TOKEN:                 google_ads_developer_token
+      AIRFLOW_VAR_GOOGLE_ADS_SECRET_REFRESH_TOKEN:                   google_ads_refresh_token
+      AIRFLOW_VAR_GOOGLE_ADS_SECRET_CLIENT_ID:                       google_ads_client_id
+      AIRFLOW_VAR_GOOGLE_ADS_SECRET_CLIENT_SECRET:                   google_ads_client_secret
+      AIRFLOW_VAR_GOOGLE_ADS_SECRET_LOGIN_CUSTOMER_ID:               google_ads_login_customer_id
+      AIRFLOW_VAR_GOOGLE_ADS_CUSTOMER_ID:                            3.497063952e+09
+      AIRFLOW_VAR_GOOGLE_ADS_LOAN_APP_FUNDED_ACTION_TYPE:            7.27061443e+08
+      AIRFLOW_VAR_GOOGLE_ADS_LOAN_APP_SUBMITTED_ACTION_TYPE:         7.41055804e+08
+      AIRFLOW_VAR_GOOGLE_ADS_LOAN_APP_OFFERS_PRESENTED_ACTION_TYPE:  7.41209241e+08
+      AIRFLOW_VAR_GOOGLE_ADS_LOAN_APP_OFFER_SELECTED_ACTION_TYPE:    7.41083509e+08
+      AIRFLOW_VAR_FB_AUTH_TOKEN:                                     fb_auth_token
+      AIRFLOW_VAR_FB_PIXEL_ID:                                       2.40287906512821e+14
+      AIRFLOW_VAR_M_ADS_ACCOUNT_ID:                                  1.41195968e+08
+      AIRFLOW_VAR_M_ADS_CUSTOMER_ID:                                 1.60482126e+08
+      AIRFLOW_VAR_M_ADS_DEVELOPER_TOKEN:                             m_ads_developer_token
+      AIRFLOW_VAR_M_ADS_CLIENT_ID:                                   m_ads_client_id
+      AIRFLOW_VAR_M_ADS_ENVIRONMENT:                                 production
+      AIRFLOW_VAR_M_ADS_CLIENT_STATE:                                ClientStateGoesHere
+      AIRFLOW_VAR_M_ADS_REFRESH_TOKEN:                               m_ads_refresh_token
+      AIRFLOW_VAR_RESTART:                                           restart
+      AIRFLOW_VAR_IMPACT_PLATFORM_LOAN_APP_SUBMITTED:                27008
+      AIRFLOW_VAR_IMPACT_PLATFORM_LOAN_APP_OFFERS_PRESENTED:         27036
+      AIRFLOW_VAR_IMPACT_PLATFORM_LOAN_APP_OFFER_SELECTED:           27065
+      AIRFLOW_VAR_IMPACT_PLATFORM_LOAN_APP_FUNDED:                   27097
+      AIRFLOW_VAR_DBT_CLOUD_SECRETS_ID:                              DBT_CLOUD_API_KEY
+      AIRFLOW_VAR_DBT_CLOUD_SECRETS_VERSION_ID:                      1
+      AIRFLOW_VAR_DBT_CLOUD_ACCOUNT_ID:                              26204
+      AIRFLOW_VAR_DBT_CLOUD_PROJECT_ID:                              62136
+      AIRFLOW_VAR_BRAZE_SECRETMANAGER_SECRET_ID:                     BRAZE_STAGING_CONSUMER_WEB_PROD
+      AIRFLOW_VAR_BRAZE_SECRETMANAGER_VERSION_ID:                    1
+      AIRFLOW_VAR_BRAZE_API_URL_BASE:                                https://rest.iad-06.braze.com
+      AIRFLOW_VAR_BRAZE_CHUNK_SIZE:                                  75
+      AIRFLOW_VAR_RING_CENTRAL_CLIENT_ID:                            -GG_GOSpRyiXOGkdUxN-Bg
+      AIRFLOW_VAR_RING_CENTRAL_USERNAME:                             1.877445007e+10
+      AIRFLOW_VAR_RING_CENTRAL_APP_EXTENSION:                        2325
+      AIRFLOW_VAR_RING_CENTRAL_CLIENT_ID_2:                          e1lmZ99MR46S-eIGdLcDXA
+    Mounts:
+      /opt/airflow/airflow.cfg from config (ro,path="airflow.cfg")
+      /var/run/secrets/kubernetes.io/serviceaccount from airflow-sa-token-j9s6c (ro)
+  cloud-sql-proxy:
+    Container ID:  containerd://b55316802c7a04e9087b20b986729210179c7bf9be8974a35464ae7c2f67a81a
+    Image:         gcr.io/cloudsql-docker/gce-proxy:1.17
+    Image ID:      gcr.io/cloudsql-docker/gce-proxy@sha256:a85176b8e7cc2ab3e687f3206e3133d10b8526535e285b9b5c4dd3c2859d8034
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      /cloud_sql_proxy
+      -instances=refi-dev-analytics-ae:us-east4:refi-dev-atx-airflow-sql-newest-2=tcp:5432
+      -ip_address_types=PRIVATE
+      -credential_file=/secrets/key.json
+    State:          Running
+      Started:      Tue, 18 Jan 2022 06:50:31 -0500
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /secrets/ from sql-secret (ro)
+      /var/run/secrets/kubernetes.io/serviceaccount from airflow-sa-token-j9s6c (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      airflow-airflow-config
+    Optional:  false
+  sql-secret:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  sql-secret
+    Optional:    false
+  airflow-sa-token-j9s6c:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  airflow-sa-token-j9s6c
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason       Age                      From     Message
+  ----     ------       ----                     ----     -------
+  Warning  FailedMount  4m18s (x2279 over 3d5h)  kubelet  MountVolume.SetUp failed for volume "airflow-sa-token-j9s6c" : secret "airflow-sa-token-j9s6c" not found
